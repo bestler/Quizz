@@ -11,6 +11,7 @@
 		BC98DF732924D62C00F19B36 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98DF722924D62C00F19B36 /* ContentView.swift */; };
 		BC98DF752924D62D00F19B36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC98DF742924D62D00F19B36 /* Assets.xcassets */; };
 		BC98DF782924D62D00F19B36 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC98DF772924D62D00F19B36 /* Preview Assets.xcassets */; };
+		BC98DF7F2924DFC500F19B36 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98DF7E2924DFC500F19B36 /* APIManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		BC98DF722924D62C00F19B36 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BC98DF742924D62D00F19B36 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC98DF772924D62D00F19B36 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BC98DF7E2924DFC500F19B36 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 				BC98DF702924D62C00F19B36 /* QuizzApp.swift */,
 				BC98DF722924D62C00F19B36 /* ContentView.swift */,
 				BC98DF742924D62D00F19B36 /* Assets.xcassets */,
+				BC98DF7E2924DFC500F19B36 /* APIManager.swift */,
 				BC98DF762924D62D00F19B36 /* Preview Content */,
 			);
 			path = Quizz;
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC98DF7F2924DFC500F19B36 /* APIManager.swift in Sources */,
 				BC98DF732924D62C00F19B36 /* ContentView.swift in Sources */,
 				BC98DF712924D62C00F19B36 /* QuizzApp.swift in Sources */,
 			);
