@@ -14,14 +14,14 @@ struct QuestionRepository {
     
     //Change colors
     static let categories = [
-        Category(id: 18, name: Question.Category.computer, iconName: "laptopcomputer", color: "blue"),
-        Category(id: 23, name: Question.Category.history, iconName: "building.columns.circle", color: "red"),
-        Category(id: 24, name: Question.Category.politics, iconName: "newspaper.circle", color: "gree")
+        Category(id: 18, name: Question.Category.Computer, iconName: "laptopcomputer", color: "Color 1"),
+        Category(id: 23, name: Question.Category.History, iconName: "building.columns", color: "Color 2"),
+        Category(id: 24, name: Question.Category.Politics, iconName: "newspaper", color: "Color 3")
     ]
     
     var questions : [Category:[Question]] = [:]
     
-    init() async {
+    mutating func loadFirstData() async{
         for category in QuestionRepository.categories {
             self.questions[category] = await api.fetchData(amount: defaultAmountOfQuestions, category: category)
         }

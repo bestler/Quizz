@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct QuizzApp: App {
+    
+    let categoryVM = CategoryVM()
+    
+
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CategoryView(categoryVM: categoryVM)
         }
     }
 }

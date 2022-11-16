@@ -26,9 +26,9 @@ struct Question : Codable {
     }
     
     enum Category : String, Codable {
-        case computer = "Science: Computers"
-        case politics
-        case history
+        case Computer = "Science: Computers"
+        case Politics = "Politics"
+        case History = "History"
     }
     
     enum QuestionType : String, Codable {

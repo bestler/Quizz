@@ -13,13 +13,16 @@ class CategoryVM {
     
     private var questionRepository : QuestionRepository
     
-    @MainActor
-    init() async{
-        self.questionRepository = await QuestionRepository()
+    init() {
+        self.questionRepository = QuestionRepository()
         possibleCategories = questionRepository.selectRandomCategories()
-        
-        let questions = questionRepository.questionsOfCategory(category: possibleCategories[0].name)
-        print(questions)
+        Task{
+            //await loadFirstData()
+        }
+    }
+    
+    func loadFirstData() async {
+        await questionRepository.loadFirstData()
     }
 }
 
