@@ -15,6 +15,11 @@ struct Question : Codable {
     let question : String
     let correct_answer : String
     let incorrect_answers : [String]
+    var answers : [String] {
+        var answers = incorrect_answers
+        answers.append(correct_answer)
+        return answers.shuffled()
+    }
     
     enum Difficulty : String, Codable {
         case easy, medium, hard
@@ -22,6 +27,8 @@ struct Question : Codable {
     
     enum Category : String, Codable {
         case computer = "Science: Computers"
+        case politics
+        case history
     }
     
     enum QuestionType : String, Codable {
@@ -37,11 +44,11 @@ struct Response : Codable {
 
 struct APIManager {
     
-    func loadData() async -> [Question] {
+    func fetchData(amount: Int, category : Category) async -> [Question] {
         
         var questions = [Question]()
         
-        guard let url = URL(string: "https://opentdb.com/api.php?amount=10&category=18&type=multiple") else {
+        guard let url = URL(string: "https://opentdb.com/api.php?amount=\(amount)&category=\(category.id)&type=multiple") else {
             print("Invalid URL")
             return questions
         }
@@ -49,7 +56,8 @@ struct APIManager {
             let (data, _) = try await URLSession.shared.data(from: url)
             if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
                 //print(decodedResponse)
-                let questions = decodedResponse.results
+                questions = decodedResponse.results
+                //TODO: Decode HTML Encoding
             }else {
                 print("Error parsing")
             }
@@ -60,12 +68,4 @@ struct APIManager {
         return questions
 
     }
-    
 }
-
-
-
-
-
-
-

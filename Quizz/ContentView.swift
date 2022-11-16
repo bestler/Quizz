@@ -14,6 +14,9 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             Text("Hello, world!")
+                .task {
+                    await CategoryVM()
+                }
         }
         .padding()
     }

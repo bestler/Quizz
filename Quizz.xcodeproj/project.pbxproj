@@ -12,6 +12,10 @@
 		BC98DF752924D62D00F19B36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC98DF742924D62D00F19B36 /* Assets.xcassets */; };
 		BC98DF782924D62D00F19B36 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC98DF772924D62D00F19B36 /* Preview Assets.xcassets */; };
 		BC98DF7F2924DFC500F19B36 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98DF7E2924DFC500F19B36 /* APIManager.swift */; };
+		BC98DF812924F8D400F19B36 /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98DF802924F8D400F19B36 /* QuizModel.swift */; };
+		BC98DF842924F9BD00F19B36 /* CategoryVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98DF832924F9BD00F19B36 /* CategoryVM.swift */; };
+		BC98DF862924F9F100F19B36 /* QuizVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98DF852924F9F100F19B36 /* QuizVM.swift */; };
+		BC98DF892924FA3D00F19B36 /* QuestionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC98DF882924FA3D00F19B36 /* QuestionRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +25,10 @@
 		BC98DF742924D62D00F19B36 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC98DF772924D62D00F19B36 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BC98DF7E2924DFC500F19B36 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		BC98DF802924F8D400F19B36 /* QuizModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
+		BC98DF832924F9BD00F19B36 /* CategoryVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVM.swift; sourceTree = "<group>"; };
+		BC98DF852924F9F100F19B36 /* QuizVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizVM.swift; sourceTree = "<group>"; };
+		BC98DF882924FA3D00F19B36 /* QuestionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,10 +61,12 @@
 		BC98DF6F2924D62C00F19B36 /* Quizz */ = {
 			isa = PBXGroup;
 			children = (
+				BC98DF8A2924FA4500F19B36 /* Utils */,
+				BC98DF872924FA1700F19B36 /*  Models */,
+				BC98DF822924F99700F19B36 /* ViewModels */,
 				BC98DF702924D62C00F19B36 /* QuizzApp.swift */,
 				BC98DF722924D62C00F19B36 /* ContentView.swift */,
 				BC98DF742924D62D00F19B36 /* Assets.xcassets */,
-				BC98DF7E2924DFC500F19B36 /* APIManager.swift */,
 				BC98DF762924D62D00F19B36 /* Preview Content */,
 			);
 			path = Quizz;
@@ -68,6 +78,32 @@
 				BC98DF772924D62D00F19B36 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BC98DF822924F99700F19B36 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BC98DF832924F9BD00F19B36 /* CategoryVM.swift */,
+				BC98DF852924F9F100F19B36 /* QuizVM.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		BC98DF872924FA1700F19B36 /*  Models */ = {
+			isa = PBXGroup;
+			children = (
+				BC98DF802924F8D400F19B36 /* QuizModel.swift */,
+			);
+			path = " Models";
+			sourceTree = "<group>";
+		};
+		BC98DF8A2924FA4500F19B36 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				BC98DF7E2924DFC500F19B36 /* APIManager.swift */,
+				BC98DF882924FA3D00F19B36 /* QuestionRepository.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +176,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC98DF842924F9BD00F19B36 /* CategoryVM.swift in Sources */,
+				BC98DF862924F9F100F19B36 /* QuizVM.swift in Sources */,
+				BC98DF812924F8D400F19B36 /* QuizModel.swift in Sources */,
+				BC98DF892924FA3D00F19B36 /* QuestionRepository.swift in Sources */,
 				BC98DF7F2924DFC500F19B36 /* APIManager.swift in Sources */,
 				BC98DF732924D62C00F19B36 /* ContentView.swift in Sources */,
 				BC98DF712924D62C00F19B36 /* QuizzApp.swift in Sources */,
