@@ -9,21 +9,48 @@ import SwiftUI
 
 struct CategoryView: View {
     
-    let categoryVM : CategoryVM
+    @ObservedObject var categoryVM : CategoryVM
     
     var body: some View {
-        ZStack {
-            //background.ignoresSafeArea()
-            VStack {
-                Text("Select a category").font(.largeTitle).bold()
+        NavigationStack {
+            ZStack {
+                //background.ignoresSafeArea()
                 VStack {
-                    ForEach(categoryVM.possibleCategories, id: \.id){ category in
-                        CategoryCard(category: category)
+                    Text("Select a category").font(.largeTitle).bold()
+                    VStack {
+                        if !categoryVM.finishedLoading {
+                            HStack(spacing: 10){
+                                Text("Loading Questions...")
+                                ProgressView()
+                            }
+                        }
+                        ForEach(categoryVM.possibleCategories, id: \.id){ category in
+                            if categoryVM.finishedLoading {
+                                NavigationLink(value : category){
+                                    CategoryCard(category: category)
+                                }
+                            }
+                            else {
+                                CategoryCard(category: category)
+                            }
+                        }
+                        .navigationDestination(for: Category.self) { category in
+                            QuizView(quizVM: QuizVM(quiz: categoryVM.getQuiz(for: category)))
+                        }
+                        .padding(.vertical, 10)
+                        .padding(20)
+                        .navigationBarBackButtonHidden(true)
+                        .buttonStyle(.plain)
                     }
-            
                 }
             }
             .padding()
+        }.task{
+            print(categoryVM.finishedLoading)
+            await categoryVM.loadFirstData()
+            print("Task completed")
+            //categoryVM.getQuestionsForCategory()
+            print("var: finishedLoading \(categoryVM.finishedLoading)")
         }
     }
     let background = LinearGradient(gradient: Gradient(colors: [.secondary, Color("Color 2")]), startPoint: .top, endPoint: .bottom)
@@ -32,7 +59,7 @@ struct CategoryView: View {
 struct CategoryCard : View {
     
     let category: Category
-        
+    
     
     var body: some View {
         ZStack{
@@ -48,10 +75,10 @@ struct CategoryCard : View {
                 Spacer()
             }
         }
-        .padding(.vertical, 10)
-        .padding(20)
+        .frame(maxHeight: 100)
+        .padding()
     }
-
+    
 }
 
 

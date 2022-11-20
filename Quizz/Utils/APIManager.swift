@@ -9,7 +9,9 @@ import Foundation
 
 struct Question : Codable, Identifiable {
     
-    var id = UUID()
+    var id : UUID {
+       UUID()
+    }
     let category : Category
     let type : QuestionType
     let difficulty : Difficulty
@@ -53,6 +55,7 @@ struct APIManager {
             print("Invalid URL")
             return questions
         }
+        print(url)
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {

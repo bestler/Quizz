@@ -10,6 +10,7 @@ import Foundation
 struct QuestionRepository {
     
     private let defaultAmountOfQuestions = 10
+    private let questionPerRound = 3
     let api = APIManager()
     
     //Change colors
@@ -22,9 +23,11 @@ struct QuestionRepository {
     var questions : [Category:[Question]] = [:]
     
     mutating func loadFirstData() async{
+        print("Loading Data...")
         for category in QuestionRepository.categories {
             self.questions[category] = await api.fetchData(amount: defaultAmountOfQuestions, category: category)
         }
+        print("Loading completed")
     }
     
     func selectRandomCategories() -> [Category]{
@@ -32,16 +35,30 @@ struct QuestionRepository {
         return QuestionRepository.categories
     }
     
-    func questionsOfCategory(category : Question.Category) -> [Question] {
-        
-        if let questionsOfCategory = questions.first(where: {$0.key.name == category}){
-            return questionsOfCategory.value
-            //TODO: Make sure that their are at least 3 questions avaiable, else refresh
+    static func reloadQuestions(for category : Category) async -> [Question] {
+        return await APIManager().fetchData(amount: 10, category: category)
+    }
+    
+    mutating func questionsOfCategory(category : Question.Category) -> [Question] {
+        //TODO: Make sure that their are at least 3 questions avaiable, else refresh
+        if let selectedCategory = questions.first(where: {$0.key.name == category}){
+            var allQuestions = selectedCategory.value
+            var selectedQuestions : [Question] = []
             
+            for i in 0...questionPerRound-1 {
+                selectedQuestions.append(allQuestions[i])
+            }
+            
+            questions[selectedCategory.key] = allQuestions
+            return selectedQuestions
+                                    
         } else {
             return [Question]()
         }
-        
+    }
+    
+    mutating func quizForCategory(_ category : Category) -> Quiz {
+        return Quiz(category: category, questions: questionsOfCategory(category: category.name))
     }
     
 }

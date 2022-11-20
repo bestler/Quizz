@@ -11,7 +11,7 @@ import SwiftUI
 struct QuizView: View {
     
     @ObservedObject var quizVM : QuizVM
-    let user = NSUserName()
+    let user = NSFullUserName()
     
     var body: some View {
         VStack {
@@ -20,57 +20,67 @@ struct QuizView: View {
                     Image(systemName: "person.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .foregroundColor(.gray)
-                    Text(user)
+                        .foregroundColor(Color(.lightGray))
+                    Text("Simon").font(.footnote)
                     HStack{
-                        ForEach(0..<3){_ in
-                            Circle().foregroundColor(.gray)
+                        ForEach(0..<3){i in
+                            if let point = quizVM.pointMask[i] {
+                                Circle().foregroundColor(point ? .green : .red)
+
+                            }else {
+                                Circle().foregroundColor(Color(.lightGray))
+                            }
                         }
                     }.frame(maxHeight: 20)
                 }
                 Spacer()
             }
-            .frame(maxHeight: 60)
+            .frame(maxHeight: 100)
             .padding(30)
             GroupBox(label:
                         Label(quizVM.category.name.rawValue, systemImage: quizVM.category.iconName)
+                .foregroundColor(Color(quizVM.category.color))
             ) {
-                Text(quizVM.currentQuestion.question)
+                Text(quizVM.currentQuestion!.question)
                     .padding(.vertical)
             }
             .padding()
             answerArea
-            .padding()
-            .frame(maxHeight: 300)
+                .padding()
+                .frame(maxHeight: 300)
             if quizVM.isShowNextQuestion {
-                Button("Next Question") {
-                    quizVM.nextQuestion()
+                withAnimation{
+                    Button("Next Question") {
+                        quizVM.nextQuestion()
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
-                .buttonStyle(.borderedProminent)
             }
             Spacer()
         }
+        .navigationBarBackButtonHidden(true)
+        //.background(Color(quizVM.category.color))
     }
     
     var answerArea : some View {
- 
+        
         Grid(){
             GridRow {
                 ForEach(0..<2){ i in
                     let answer = quizVM.currentAnswers[i]
                     ZStack {
-                        QuizCardBackground(isCorrect: answer.1,
-                                           isMasked: quizVM.mask[i])
+                            QuizCardBackground(isCorrect: answer.1,
+                                               isMasked: quizVM.mask[i])
                         Text(quizVM.currentAnswers[i].0)
-                        }
+                    }
                     .onTapGesture {
                         withAnimation {
                             quizVM.selectedAnswerPos = i
                             quizVM.evaluteQuestion()
                         }
                     }
-                    }
                 }
+            }
             GridRow{
                 ForEach(2..<4){ i in
                     let answer = quizVM.currentAnswers[i]
@@ -79,7 +89,7 @@ struct QuizView: View {
                                            //isRevelead: isRevealed,
                                            isMasked: quizVM.mask[i])
                         Text(quizVM.currentAnswers[i].0)
-                        }
+                    }
                     .onTapGesture {
                         withAnimation() {
                             quizVM.selectedAnswerPos = i
@@ -104,10 +114,11 @@ struct QuizCardBackground : View {
     }
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 10)
-            .foregroundColor(isMasked ? color : Color(.lightGray))
+        withAnimation{
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundColor(isMasked ? color : Color(.secondarySystemBackground))
+        }
     }
-}
     
     struct Constants {
         static let colorTrue : Color = .green
@@ -119,6 +130,7 @@ struct QuizCardBackground : View {
     
     struct QuizView_Previews: PreviewProvider {
         
+        
         static let exampleQuestion = Question(category: Question.Category.Computer,
                                               type: Question.QuestionType.multiple,
                                               difficulty: Question.Difficulty.hard,
@@ -126,6 +138,7 @@ struct QuizCardBackground : View {
                                               correct_answer: "TRS-80",
                                               incorrect_answers: ["Commodore 64","ZX Spectrum","Apple 3"])
         static var previews: some View {
-            QuizView(quizVM: QuizVM(category: QuestionRepository.categories[0], questions: [exampleQuestion]))
+            QuizView(quizVM: QuizVM(quiz: Quiz(category: QuestionRepository.categories[0], questions: [exampleQuestion])))
         }
     }
+}

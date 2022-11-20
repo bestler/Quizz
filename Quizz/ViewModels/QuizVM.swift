@@ -9,37 +9,38 @@ import Foundation
 
 class QuizVM : ObservableObject {
     
-    @Published var currentQuestion : Question
+    @Published var currentQuestion : Question?
     @Published var currentAnswers : [(String,Bool)]
     @Published var selectedAnswerPos: Int?
-    @Published var evalutedResponse: Bool?
     @Published var category : Category
     @Published var isShowNextQuestion = false
     @Published var mask : [Bool]
+    @Published var pointMask : [Bool?]
     
+    
+    // private var questionRepository : QuestionRepository
     private let quiz : Quiz
     private var index : Int
     
-    init(category : Category, questions : [Question]) {
-        index = 0
-        self.quiz = Quiz(category: category, questions: questions)
-        self.currentQuestion = quiz.getQuestionAt(index)!
+    
+    init(quiz : Quiz){
+        self.quiz = quiz
+        self.index = 0
+        self.currentAnswers = quiz.questions[0].answers
         self.category = quiz.category
-        self.currentAnswers = quiz.getQuestionAt(index)!.answers
+        self.currentQuestion = quiz.questions[index]
         self.mask = [false, false, false, false]
-        shuffleAnswers()
+        self.pointMask = quiz.points
     }
     
     private func shuffleAnswers(){
         currentAnswers.shuffle()
     }
-    
 
-    
     func evaluteQuestion() {
         if let pos = selectedAnswerPos, !isShowNextQuestion {
             let selectedAnswer = currentAnswers[pos]
-            evalutedResponse = selectedAnswer.1
+            pointMask[index] = selectedAnswer.1
             mask[pos] = true
             if let posCorrect = currentAnswers.firstIndex(where: {$0.1 == true}){
                 mask[posCorrect] = true
@@ -51,9 +52,13 @@ class QuizVM : ObservableObject {
     
     
     func nextQuestion(){
-        evalutedResponse = nil
         isShowNextQuestion = false
-        resetMask()
+        index += 1
+        if index < 3 {
+            currentQuestion = quiz.questions[index]
+            currentAnswers = quiz.questions[index].answers
+            resetMask()
+        }
         
     }
     

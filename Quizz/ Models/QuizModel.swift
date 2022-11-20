@@ -13,12 +13,22 @@ struct Quiz {
     let questions : [Question]
     var points : [Bool?] = [nil, nil, nil]
     
+    var points_count : Int {
+        var count = 0
+        for point in points {
+            if point ?? false {
+                count += 1
+            }
+        }
+        return count
+    }
+    
     mutating func evaluteResult(_ result : Bool, at index: Int){
         points[index] = result
     }
     
     func getQuestionAt(_ index : Int) -> Question? {
-        return questions[0]
+        return questions.first
     }
     
 }
