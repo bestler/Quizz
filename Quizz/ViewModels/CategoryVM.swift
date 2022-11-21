@@ -15,8 +15,8 @@ class CategoryVM : ObservableObject{
     
     private var questionRepository : QuestionRepository
     
-    init() {
-        self.questionRepository = QuestionRepository()
+    init(questionRepository: QuestionRepository) {
+        self.questionRepository = questionRepository
         possibleCategories = questionRepository.selectRandomCategories()
         selectedCategory = QuestionRepository.categories[0]
     }

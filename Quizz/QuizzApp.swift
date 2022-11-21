@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct QuizzApp: App {
     
-    let categoryVM = CategoryVM()
-        
+    @StateObject var questionRepository = QuestionRepository()
+    
+            
     var body: some Scene {
         WindowGroup {
-            CategoryView(categoryVM: categoryVM)
+            CategoryView(categoryVM: CategoryVM(questionRepository: questionRepository))
+                .environmentObject(questionRepository)
         }
     }
 }

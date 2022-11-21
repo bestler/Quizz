@@ -49,9 +49,15 @@ struct CategoryView: View {
             //categoryVM.getQuestionsForCategory()
             print("var: finishedLoading \(categoryVM.finishedLoading)")
         }
+        .onAppear(){
+            
+        }
     }
     let background = LinearGradient(gradient: Gradient(colors: [.secondary, Color("Color 2")]), startPoint: .top, endPoint: .bottom)
+    
+
 }
+
 
 struct CategoryCard : View {
     
@@ -82,6 +88,6 @@ struct CategoryCard : View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        CategoryView(categoryVM: CategoryVM())
+        CategoryView(categoryVM: CategoryVM(questionRepository: QuestionRepository()))
     }
 }

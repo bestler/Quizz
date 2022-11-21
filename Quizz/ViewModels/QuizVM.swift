@@ -41,6 +41,8 @@ class QuizVM : ObservableObject {
         createTimer()
     }
     
+
+    
     private func createTimer() {
         timer = Timer(fireAt: endDate, interval: 0, target: self, selector: #selector(evaluteQuestion), userInfo: nil, repeats: false)
         RunLoop.main.add(timer, forMode: .common)

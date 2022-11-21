@@ -10,8 +10,8 @@ import SwiftUI
 
 struct QuizView: View {
     
-    @ObservedObject var quizVM : QuizVM
-    let user = NSFullUserName()
+    @EnvironmentObject var questionRepository : QuestionRepository
+    @StateObject var quizVM : QuizVM
     
     var body: some View {
         VStack {
@@ -61,6 +61,9 @@ struct QuizView: View {
                 }
             }
             Spacer()
+        }
+        .onAppear(){
+            questionRepository.removeUsedQuestions(category: quizVM.category)
         }
         .navigationBarBackButtonHidden(true)
         //.background(Color(quizVM.category.color))

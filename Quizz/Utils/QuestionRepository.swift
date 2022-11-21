@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct QuestionRepository {
+class QuestionRepository : ObservableObject {
     
-    private let defaultAmountOfQuestions = 10
+    private let defaultAmountOfQuestions = 3
     private let questionPerRound = 3
     let api = APIManager()
     
@@ -22,7 +22,7 @@ struct QuestionRepository {
     
     var questions : [Category:[Question]] = [:]
     
-    mutating func loadFirstData() async{
+    func loadFirstData() async{
         print("Loading Data...")
         for category in QuestionRepository.categories {
             self.questions[category] = await api.fetchData(amount: defaultAmountOfQuestions, category: category)
@@ -35,30 +35,37 @@ struct QuestionRepository {
         return QuestionRepository.categories
     }
     
-    static func reloadQuestions(for category : Category) async -> [Question] {
-        return await APIManager().fetchData(amount: 10, category: category)
+    func reloadQuestions(for category : Category) async {
+        print("Reloading questions...")
+        let newQuestions = await APIManager().fetchData(amount: 6, category: category)
+        questions[category]?.append(contentsOf: newQuestions)
     }
     
-    mutating func questionsOfCategory(category : Question.Category) -> [Question] {
-        //TODO: Make sure that their are at least 3 questions avaiable, else refresh
-        if let selectedCategory = questions.first(where: {$0.key.name == category}){
-            var allQuestions = selectedCategory.value
-            var selectedQuestions : [Question] = []
-            
-            for i in 0...questionPerRound-1 {
-                selectedQuestions.append(allQuestions[i])
-            }
-            
-            questions[selectedCategory.key] = allQuestions
-            return selectedQuestions
-                                    
-        } else {
-            return [Question]()
+    
+    func quizForCategory(_ category : Category) -> Quiz {
+        var selectedQuestions : [Question] = []
+        
+        print("count: \(questions[category]?.count ?? -1)")
+        for i in 0...questionPerRound-1 {
+            selectedQuestions.append((questions[category]?[i])!)
         }
+        return Quiz(category: category, questions: selectedQuestions)
     }
     
-    mutating func quizForCategory(_ category : Category) -> Quiz {
-        return Quiz(category: category, questions: questionsOfCategory(category: category.name))
+    func removeUsedQuestions(category : Category){
+        
+        for _ in 0...questionPerRound-1 {
+            questions[category]?.remove(at: 0)
+        }
+        
+        if (questions[category]?.count ?? 0 < 3) {
+            Task {
+                print("Count of questions before reloading ... \(questions[category]?.count ?? -1)")
+                await reloadQuestions(for: category)
+                print("Count of questions after reloading ... \(questions[category]?.count ?? 0)")
+
+            }
+        }
     }
     
 }
