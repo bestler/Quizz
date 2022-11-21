@@ -7,6 +7,8 @@
 
 import Foundation
 
+@MainActor
+
 class QuizVM : ObservableObject {
     
     @Published var currentQuestion : Question?
@@ -16,12 +18,15 @@ class QuizVM : ObservableObject {
     @Published var isShowNextQuestion = false
     @Published var mask : [Bool]
     @Published var pointMask : [Bool?]
+    @Published var startDate : Date
+    @Published var endDate: Date
     
-    
-    // private var questionRepository : QuestionRepository
     private let quiz : Quiz
+    private let timeLimit : TimeInterval = 25
     private var index : Int
+    private var timer : Timer = Timer()
     
+
     
     init(quiz : Quiz){
         self.quiz = quiz
@@ -31,20 +36,34 @@ class QuizVM : ObservableObject {
         self.currentQuestion = quiz.questions[index]
         self.mask = [false, false, false, false]
         self.pointMask = quiz.points
+        self.startDate = Date()
+        self.endDate = Date().addingTimeInterval(timeLimit)
+        createTimer()
+    }
+    
+    private func createTimer() {
+        timer = Timer(fireAt: endDate, interval: 0, target: self, selector: #selector(evaluteQuestion), userInfo: nil, repeats: false)
+        RunLoop.main.add(timer, forMode: .common)
     }
     
     private func shuffleAnswers(){
         currentAnswers.shuffle()
     }
 
-    func evaluteQuestion() {
+    @objc func evaluteQuestion() {
         if let pos = selectedAnswerPos, !isShowNextQuestion {
+            timer.invalidate()
             let selectedAnswer = currentAnswers[pos]
             pointMask[index] = selectedAnswer.1
             mask[pos] = true
             if let posCorrect = currentAnswers.firstIndex(where: {$0.1 == true}){
                 mask[posCorrect] = true
             }
+        }else {
+            if let posCorrect = currentAnswers.firstIndex(where: {$0.1 == true}){
+                mask[posCorrect] = true
+            }
+            pointMask[index] = false
         }
         isShowNextQuestion = true
         
@@ -53,12 +72,17 @@ class QuizVM : ObservableObject {
     
     func nextQuestion(){
         isShowNextQuestion = false
+        selectedAnswerPos = nil
         index += 1
         if index < 3 {
             currentQuestion = quiz.questions[index]
             currentAnswers = quiz.questions[index].answers
             resetMask()
         }
+        startDate = Date()
+        endDate = Date().addingTimeInterval(timeLimit)
+        createTimer()
+
         
     }
     
@@ -67,7 +91,4 @@ class QuizVM : ObservableObject {
             mask[i] = false
         }
     }
-    
-    
-    
 }

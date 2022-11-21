@@ -45,6 +45,10 @@ struct QuizView: View {
                     .padding(.vertical)
             }
             .padding()
+            if !quizVM.isShowNextQuestion {
+                ProgressView(timerInterval: quizVM.startDate...quizVM.endDate).self
+                    .padding()
+            }
             answerArea
                 .padding()
                 .frame(maxHeight: 300)
@@ -121,6 +125,7 @@ struct QuizCardBackground : View {
     }
     
     struct Constants {
+        static let timeRange : Int = 30
         static let colorTrue : Color = .green
         static let colorWrong : Color = .red
     }

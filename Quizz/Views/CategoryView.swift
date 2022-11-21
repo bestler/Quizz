@@ -19,11 +19,8 @@ struct CategoryView: View {
                     Text("Select a category").font(.largeTitle).bold()
                     VStack {
                         if !categoryVM.finishedLoading {
-                            HStack(spacing: 10){
-                                Text("Loading Questions...")
-                                ProgressView()
+                                ProgressView("Loading Questions...")
                             }
-                        }
                         ForEach(categoryVM.possibleCategories, id: \.id){ category in
                             if categoryVM.finishedLoading {
                                 NavigationLink(value : category){
