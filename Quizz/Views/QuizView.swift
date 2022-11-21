@@ -10,6 +10,8 @@ import SwiftUI
 
 struct QuizView: View {
     
+    @Environment(\.dismiss) var dismiss
+    
     @EnvironmentObject var questionRepository : QuestionRepository
     @StateObject var quizVM : QuizVM
     
@@ -26,7 +28,7 @@ struct QuizView: View {
                         ForEach(0..<3){i in
                             if let point = quizVM.pointMask[i] {
                                 Circle().foregroundColor(point ? .green : .red)
-
+                                
                             }else {
                                 Circle().foregroundColor(Color(.lightGray))
                             }
@@ -62,6 +64,13 @@ struct QuizView: View {
             }
             Spacer()
         }
+        .alert("Quiz finished", isPresented: $quizVM.isCompleted, presenting: quizVM.points) { _ in
+            Button("Play again"){
+                dismiss()
+            }
+        } message: { points in
+            Text("You scored \(points)/3! You can start directly again.")
+        }
         .onAppear(){
             questionRepository.removeUsedQuestions(category: quizVM.category)
         }
@@ -76,8 +85,8 @@ struct QuizView: View {
                 ForEach(0..<2){ i in
                     let answer = quizVM.currentAnswers[i]
                     ZStack {
-                            QuizCardBackground(isCorrect: answer.1,
-                                               isMasked: quizVM.mask[i])
+                        QuizCardBackground(isCorrect: answer.1,
+                                           isMasked: quizVM.mask[i])
                         Text(quizVM.currentAnswers[i].0)
                     }
                     .onTapGesture {
@@ -93,7 +102,6 @@ struct QuizView: View {
                     let answer = quizVM.currentAnswers[i]
                     ZStack {
                         QuizCardBackground(isCorrect: answer.1,
-                                           //isRevelead: isRevealed,
                                            isMasked: quizVM.mask[i])
                         Text(quizVM.currentAnswers[i].0)
                     }
@@ -146,7 +154,7 @@ struct QuizCardBackground : View {
                                               correct_answer: "TRS-80",
                                               incorrect_answers: ["Commodore 64","ZX Spectrum","Apple 3"])
         static var previews: some View {
-            QuizView(quizVM: QuizVM(quiz: Quiz(category: QuestionRepository.categories[0], questions: [exampleQuestion])))
+            QuizView(quizVM: QuizVM(quiz: Quiz(category: QuestionRepository.categories[0], questions: [exampleQuestion]))).environmentObject(QuestionRepository())
         }
     }
 }

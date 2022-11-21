@@ -20,8 +20,10 @@ class QuizVM : ObservableObject {
     @Published var pointMask : [Bool?]
     @Published var startDate : Date
     @Published var endDate: Date
+    @Published var isCompleted = false
+    @Published var points : Int
     
-    private let quiz : Quiz
+    private var quiz : Quiz
     private let timeLimit : TimeInterval = 25
     private var index : Int
     private var timer : Timer = Timer()
@@ -38,6 +40,7 @@ class QuizVM : ObservableObject {
         self.pointMask = quiz.points
         self.startDate = Date()
         self.endDate = Date().addingTimeInterval(timeLimit)
+        self.points = quiz.points_count
         createTimer()
     }
     
@@ -68,14 +71,19 @@ class QuizVM : ObservableObject {
             pointMask[index] = false
         }
         isShowNextQuestion = true
-        
+        index += 1
+        if index > 2 {
+            quiz.points = pointMask
+            points = quiz.points_count
+            index = 0
+            isCompleted = true
+        }
     }
     
     
     func nextQuestion(){
         isShowNextQuestion = false
         selectedAnswerPos = nil
-        index += 1
         if index < 3 {
             currentQuestion = quiz.questions[index]
             currentAnswers = quiz.questions[index].answers
