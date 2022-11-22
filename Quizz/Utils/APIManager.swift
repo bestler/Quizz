@@ -15,9 +15,9 @@ struct Question : Codable, Identifiable {
     let category : Category
     let type : QuestionType
     let difficulty : Difficulty
-    let question : String
-    let correct_answer : String
-    let incorrect_answers : [String]
+    var question : String
+    var correct_answer : String
+    var incorrect_answers : [String]
     var answers : [(String, Bool)] {
         var answers = incorrect_answers.map({($0,false)})
         answers.append((correct_answer, true))
@@ -62,6 +62,9 @@ struct APIManager {
                 //print(decodedResponse)
                 questions = decodedResponse.results
                 //TODO: Decode HTML Encoding
+                for i in questions.indices {
+                    questions[i] = decodeHtml(for: questions[i])
+                }
             }else {
                 print("Error parsing")
             }
@@ -71,5 +74,27 @@ struct APIManager {
         
         return questions
 
+    }
+    
+    private func decodeHtml(for question : Question) -> Question {
+        var decodedQuestion = question
+        decodedQuestion.question = question.question.htmlDecoded
+        decodedQuestion.correct_answer = question.correct_answer.htmlDecoded
+        for i in decodedQuestion.incorrect_answers.indices {
+            decodedQuestion.incorrect_answers[i] = decodedQuestion.incorrect_answers[i].htmlDecoded
+        }
+        
+        return decodedQuestion
+    }
+}
+
+extension String {
+    var htmlDecoded: String {
+        let decoded = try? NSAttributedString(data: Data(utf8), options: [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+            ], documentAttributes: nil).string
+
+        return decoded ?? self
     }
 }
