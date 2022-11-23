@@ -22,13 +22,4 @@ struct Quiz {
         }
         return count
     }
-    
-    mutating func evaluteResult(_ result : Bool, at index: Int){
-        points[index] = result
-    }
-    
-    func getQuestionAt(_ index : Int) -> Question? {
-        return questions.first
-    }
-    
 }

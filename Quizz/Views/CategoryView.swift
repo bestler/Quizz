@@ -14,7 +14,6 @@ struct CategoryView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                //background.ignoresSafeArea()
                 VStack {
                     Text("Select a category").font(.largeTitle).bold()
                     VStack {
@@ -25,14 +24,16 @@ struct CategoryView: View {
                             if categoryVM.finishedLoading {
                                 NavigationLink(value : category){
                                     CategoryCard(category: category)
-                                }
+                                }.simultaneousGesture(TapGesture().onEnded{
+                                    categoryVM.newRandomCategories()
+                                })
                             }
                             else {
                                 CategoryCard(category: category)
                             }
                         }
                         .navigationDestination(for: Category.self) { category in
-                            QuizView(quizVM: QuizVM(quiz: categoryVM.getQuiz(for: category)))
+                            QuizView(quizVM: QuizVM(quiz: categoryVM.getQuiz(for:category)))
                         }
                         .padding(.vertical, 10)
                         .padding(20)
@@ -46,16 +47,9 @@ struct CategoryView: View {
             print(categoryVM.finishedLoading)
             await categoryVM.loadFirstData()
             print("Task completed")
-            //categoryVM.getQuestionsForCategory()
             print("var: finishedLoading \(categoryVM.finishedLoading)")
         }
-        .onAppear(){
-            
-        }
     }
-    let background = LinearGradient(gradient: Gradient(colors: [.secondary, Color("Color 2")]), startPoint: .top, endPoint: .bottom)
-    
-
 }
 
 

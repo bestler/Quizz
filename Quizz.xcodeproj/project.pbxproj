@@ -68,8 +68,8 @@
 				BC98DF872924FA1700F19B36 /*  Models */,
 				BC98DF822924F99700F19B36 /* ViewModels */,
 				BC98DF702924D62C00F19B36 /* QuizzApp.swift */,
-				BC98DF742924D62D00F19B36 /* Assets.xcassets */,
 				BC98DF762924D62D00F19B36 /* Preview Content */,
+				BC98DF742924D62D00F19B36 /* Assets.xcassets */,
 			);
 			path = Quizz;
 			sourceTree = "<group>";

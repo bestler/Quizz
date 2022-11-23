@@ -17,7 +17,9 @@ class QuestionRepository : ObservableObject {
     static let categories = [
         Category(id: 18, name: Question.Category.Computer, iconName: "laptopcomputer", color: "Color 1"),
         Category(id: 23, name: Question.Category.History, iconName: "building.columns", color: "Color 2"),
-        Category(id: 24, name: Question.Category.Politics, iconName: "newspaper", color: "Color 3")
+        Category(id: 24, name: Question.Category.Politics, iconName: "newspaper", color: "Color 3"),
+        Category(id: 25, name: Question.Category.Art, iconName: "photo.artframe", color: "Color 4"),
+        Category(id: 28, name: Question.Category.Vehicles, iconName: "car", color: "Color 5"),
     ]
     
     var questions : [Category:[Question]] = [:]
@@ -31,8 +33,9 @@ class QuestionRepository : ObservableObject {
     }
     
     func selectRandomCategories() -> [Category]{
-        //TODO: function to return three random categories from categories array
-        return QuestionRepository.categories
+        
+        let randCategories = QuestionRepository.categories.shuffled().prefix(3)
+        return Array(randCategories[...2])
     }
     
     func reloadQuestions(for category : Category) async {

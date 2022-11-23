@@ -32,6 +32,8 @@ struct Question : Codable, Identifiable {
         case Computer = "Science: Computers"
         case Politics = "Politics"
         case History = "History"
+        case Art = "Art"
+        case Vehicles = "Vehicles"
     }
     
     enum QuestionType : String, Codable {
