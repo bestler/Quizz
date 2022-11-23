@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import UIKit
 
 @MainActor
-
 class QuizVM : ObservableObject {
     
     @Published var currentQuestion : Question?
@@ -23,6 +23,7 @@ class QuizVM : ObservableObject {
     @Published var isCompleted = false
     @Published var points : Int
     
+    private let feedbackGenerator = UINotificationFeedbackGenerator()
     private var quiz : Quiz
     private let timeLimit : TimeInterval = 25
     private var index : Int
@@ -41,6 +42,7 @@ class QuizVM : ObservableObject {
         self.startDate = Date()
         self.endDate = Date().addingTimeInterval(timeLimit)
         self.points = quiz.points_count
+        feedbackGenerator.prepare()
         createTimer()
     }
     
@@ -60,6 +62,7 @@ class QuizVM : ObservableObject {
             timer.invalidate()
             let selectedAnswer = currentAnswers[pos]
             pointMask[index] = selectedAnswer.1
+            playHaptics(selectedAnswer.1)
             mask[pos] = true
             if let posCorrect = currentAnswers.firstIndex(where: {$0.1 == true}){
                 mask[posCorrect] = true
@@ -100,5 +103,9 @@ class QuizVM : ObservableObject {
         for i in mask.indices {
             mask[i] = false
         }
+    }
+    
+    private func playHaptics(_ isCorrect : Bool) {
+            isCorrect ? feedbackGenerator.notificationOccurred(.success) : feedbackGenerator.notificationOccurred(.error)
     }
 }
