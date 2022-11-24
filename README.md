@@ -3,9 +3,7 @@
 > Quizz is a simple Trivia Application for iOS. You can play some rounds to improve your General knowledge.
 
 ## Look&Feel
-
-![Devices_only](https://user-images.githubusercontent.com/68077359/203848009-7965a629-668d-4988-be9e-d602bff918bb.png)
-
+![Devices_only](https://user-images.githubusercontent.com/68077359/203850049-5bb70f09-a891-4442-824d-fd9896693075.png)
 
 ## Implemented categories
 
