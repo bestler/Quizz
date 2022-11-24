@@ -15,16 +15,21 @@ struct QuizView: View {
     @EnvironmentObject var questionRepository : QuestionRepository
     @StateObject var quizVM : QuizVM
     @Environment(\.colorScheme) var colorScheme
+    @AccessibilityFocusState private var isQuestionFocused
+    
     
     var body: some View {
         VStack {
             Spacer()
             GroupBox(label:
                         Label(quizVM.category.name.rawValue,
-                              systemImage: quizVM.category.iconName).accessibilityHidden(true)) {
+                              systemImage: quizVM.category.iconName)) {
                 Text(quizVM.currentQuestion!.question)
                     .padding(.vertical)
             }
+                              .accessibilityElement()
+                              .accessibilityLabel(quizVM.currentQuestion!.question)
+                              .accessibilityFocused($isQuestionFocused)
                               .padding()
             if !quizVM.isShowNextQuestion {
                 ProgressView(timerInterval: quizVM.startDate...quizVM.endDate).self
@@ -38,6 +43,7 @@ struct QuizView: View {
             if quizVM.isShowNextQuestion {
                 withAnimation{
                     Button("Next Question") {
+                        isQuestionFocused = true
                         quizVM.nextQuestion()
                     }
                     .buttonStyle(.borderedProminent)
@@ -58,7 +64,7 @@ struct QuizView: View {
         .navigationBarBackButtonHidden(true)
     }
     
-
+    
     
     var answerArea : some View {
         Grid(){
@@ -124,7 +130,6 @@ struct QuizCard : View {
     }
     
     struct Constants {
-        static let timeRange : Int = 30
         static let colorTrue : Color = .green
         static let colorWrong : Color = .red
     }

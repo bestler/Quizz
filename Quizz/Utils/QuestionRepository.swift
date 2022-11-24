@@ -9,7 +9,7 @@ import Foundation
 
 class QuestionRepository : ObservableObject {
     
-    private let defaultAmountOfQuestions = 3
+    private let defaultAmountOfQuestions = 9
     private let questionPerRound = 3
     let api = APIManager()
     

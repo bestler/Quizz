@@ -28,9 +28,11 @@ struct CategoryView: View {
                                     categoryVM.newRandomCategories()
                                 })
                             }
+                            /*
                             else {
                                 CategoryCard(category: category)
                             }
+                             */
                         }
                         .navigationDestination(for: Category.self) { category in
                             QuizView(quizVM: QuizVM(quiz: categoryVM.getQuiz(for:category)))

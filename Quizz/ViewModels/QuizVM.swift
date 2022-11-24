@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 @MainActor
 class QuizVM : ObservableObject {
@@ -25,7 +26,7 @@ class QuizVM : ObservableObject {
     
     private let feedbackGenerator = UINotificationFeedbackGenerator()
     private var quiz : Quiz
-    private let timeLimit : TimeInterval = 25
+    private let timeLimit : TimeInterval = 30
     private var index : Int
     private var timer : Timer = Timer()
     
